@@ -1,0 +1,17 @@
+[
+  {
+    "relation" : [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target" : {
+      "namespace" : "android_app",
+      "package_name" : "pdf.scanner.editor.cam",
+      "sha256_cert_fingerprints" : [
+        "3B:13:28:5D:B7:F0:C6:A4:1B:E3:15:B8:29:5E:E9:B7:D5:BA:B6:D3:34:C7:C0:2F:99:92:95:7D:03:77:65:AC",
+        "D4:FC:44:54:69:EC:E8:13:2A:C0:B6:7D:E1:76:F1:93:E3:F5:F6:57:88:61:94:D1:FA:C7:4A:38:84:2F:9D:86",
+        "B2:D6:54:5C:37:61:83:CF:3A:45:F4:A1:30:09:5A:0F:78:6E:66:45:99:94:13:72:C0:45:7C:3F:80:3D:FF:E8"
+      ]
+    }
+  }
+]

@@ -1,0 +1,9 @@
+.root {
+  &:focus-visible {
+    outline: none;
+    outline: rem(2px) solid #FFF;
+  }
+}
+.indicator{
+  cursor: none;
+}

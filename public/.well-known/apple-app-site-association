@@ -1,0 +1,15 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "53U9S8VXBL.document.scanner.master",
+                "paths": ["*"]
+            }
+        ]
+    },
+    "webcredentials": {
+       "apps": [ "53U9S8VXBL.document.scanner.master" ]
+    }
+}
+
