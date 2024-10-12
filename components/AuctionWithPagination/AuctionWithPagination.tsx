@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Container, SimpleGrid, Pagination } from "@mantine/core";
-import { CarouselCard } from "../CarouselCard/CarouselCard";
 import classes from "./auctionPagination.module.css";
 import { api } from "../../axiosConfig";
+import { CarouselCard } from "../CarouselCard/CarouselCard";
 
 // Define the type for the items
 interface Item {

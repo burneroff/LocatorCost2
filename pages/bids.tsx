@@ -15,8 +15,6 @@ import {
   Text,
   Alert,
 } from "@mantine/core";
-import { CarouselCard } from "../components/CarouselCard/CarouselCard";
-import AuctionWithPagination from "../components/AuctionWithPagination/AuctionWithPagination";
 import classes from "./bids.module.css";
 import { api } from "../axiosConfig";
 import { Carousel } from "@mantine/carousel";
