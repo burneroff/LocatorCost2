@@ -76,7 +76,7 @@ export default function AuthenticationForm(props: any) {
               });
 
               setAuth({
-                role: "Клиент",
+                role: response.data.role,
                 email: response.data.email,
                 fio: response.data.fio,
               });
@@ -92,7 +92,7 @@ export default function AuthenticationForm(props: any) {
                 fio: form.values.name,
               });
             }
-
+            console.log("BIG AUTH", auth);
             router.push("/auction");
           } catch (error) {
             if (axios.isAxiosError(error)) {

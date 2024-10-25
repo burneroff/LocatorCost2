@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import {
   HoverCard,
   Group,
@@ -6,7 +8,6 @@ import {
   Text,
   SimpleGrid,
   ThemeIcon,
-  Anchor,
   Divider,
   Center,
   Box,
@@ -21,68 +22,31 @@ import {
   ActionIcon,
   Tooltip,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-  IconCirclePlus,
-  IconHeartFilled,
-  IconHeart,
-  IconZoomQuestion,
-  IconArticle,
-  IconMoodPuzzled,
-} from "@tabler/icons-react";
 import Link from "next/link";
 import classes from "./header.module.css";
+import {
+  IconChevronDown,
+  IconCirclePlus,
+  IconHeart,
+  IconUserCircle,
+} from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 
 const mockdata = [
   {
-    icon: IconCode,
+    icon: IconCirclePlus,
     title: "Партнерам",
     description: "Информация описывающая условия взаимодействия",
     href: "/partners",
   },
-  {
-    icon: IconCoin,
-    title: "Клиентам",
-    description: "Причины работать с нами",
-    href: "/clients",
-  },
-  {
-    icon: IconBook,
-    title: "Вебинары",
-    description: "Интенсив для новых клиентов",
-    href: "/webinars",
-  },
-  {
-    icon: IconArticle,
-    title: "Блог",
-    description: "Самые свежие новостей!",
-    href: "/blog",
-  },
-  {
-    icon: IconMoodPuzzled,
-    title: "Почему LocatorCost?",
-    description: "Краткое описание продукта",
-    href: "/why-locatorcost",
-  },
-  {
-    icon: IconZoomQuestion,
-    title: "Вопросы - Ответы",
-    description: "Задавайте интересующие вас вопросы",
-    href: "/faq",
-  },
+  // Add other items here...
 ];
 
 export function Header() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const authContext = useContext(AuthContext); // Get the context
+  const auth = authContext?.auth; // Access auth if it exists, otherwise null
 
   const links = mockdata.map((item) => (
     <Link href={item.href} key={item.title} passHref>
@@ -108,27 +72,19 @@ export function Header() {
     <Container size="1440px">
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <Image src={"img/logo.png"} w={"auto"} h={40}></Image>
+          <Image src={"img/logo.png"} w={"auto"} h={40} alt="Logo" />
           <Group h="100%" gap={0} visibleFrom="sm">
             <Link href="/auction" className={classes.link} passHref>
               Продажа
             </Link>
-            <HoverCard
-              width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
-            >
+            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
                 <a className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       О нас
                     </Box>
-                    <IconChevronDown
-                      style={{ width: rem(16), height: rem(16) }}
-                    />
+                    <IconChevronDown style={{ width: rem(16), height: rem(16) }} />
                   </Center>
                 </a>
               </HoverCard.Target>
@@ -150,34 +106,34 @@ export function Header() {
           <Group visibleFrom="sm">
             <Tooltip label="Избранное" withArrow>
               <ActionIcon variant="transparent" aria-label="Избранное">
-                <IconHeart
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                  color={"gray"}
-                />
+                <IconHeart style={{ width: "70%", height: "70%" }} stroke={1.5} color={"gray"} />
               </ActionIcon>
             </Tooltip>
             <Link href="/add-object" className={classes.link} passHref>
-            <Button
-              variant="filled"
-              color="#6600FF"
-              leftSection={<IconCirclePlus size={20} />}
-            >
-              Добавить объект
-            </Button>
-            </Link>
-            <Link href="/authentication" passHref>
-              <Button variant="light" color="#6600FF">
-                Войти
+              <Button
+                variant="filled"
+                color="#6600FF"
+                leftSection={<IconCirclePlus size={20} />}
+              >
+                Добавить объект
               </Button>
             </Link>
+            {auth ? (
+              <Link href="/profile" passHref>
+                <Button variant="light" color="#6600FF" leftSection={<IconUserCircle size={20} />}>
+                  Профиль
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/authentication" passHref>
+                <Button variant="light" color="#6600FF">
+                  Войти
+                </Button>
+              </Link>
+            )}
           </Group>
 
-          <Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            hiddenFrom="sm"
-          />
+          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>
       </header>
 
@@ -192,7 +148,6 @@ export function Header() {
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
-
           <Link className={classes.link} href="/sale" passHref>
             Продажа
           </Link>
@@ -201,10 +156,7 @@ export function Header() {
               <Box component="span" mr={5}>
                 О нас
               </Box>
-              <IconChevronDown
-                style={{ width: rem(16), height: rem(16) }}
-                color={"#6600FF"}
-              />
+              <IconChevronDown style={{ width: rem(16), height: rem(16) }} color={"#6600FF"} />
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{links}</Collapse>
@@ -219,7 +171,6 @@ export function Header() {
           </Link>
 
           <Divider my="sm" />
-
           <Group justify="center" grow pb="xl" px="md">
             <Button
               variant="filled"
@@ -228,11 +179,19 @@ export function Header() {
             >
               Добавить объект
             </Button>
-            <Link href="/authentication" passHref>
-              <Button variant="light" color="#6600FF">
-                Войти
-              </Button>
-            </Link>
+            {auth ? (
+              <Link href="/profile" passHref>
+                <Button variant="light" color="#6600FF" leftSection={<IconUserCircle size={20} />}>
+                  Профиль
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/authentication" passHref>
+                <Button variant="light" color="#6600FF">
+                  Войти
+                </Button>
+              </Link>
+            )}
           </Group>
         </ScrollArea>
       </Drawer>

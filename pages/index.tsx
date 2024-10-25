@@ -9,9 +9,9 @@ export default function IndexPage() {
   const authContext = useContext(AuthContext);
   console.log("Auth data:", authContext);
   return (
-    <AuthProvider>
+    <>
       <Header></Header>
       <Hero></Hero>
-    </AuthProvider>
+    </>
   );
 }
