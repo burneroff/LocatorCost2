@@ -28,9 +28,12 @@ import {
   IconChevronDown,
   IconCirclePlus,
   IconHeart,
+  IconLogout,
   IconUserCircle,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { api } from "../../axiosConfig";
+import { useRouter } from "next/router";
 
 const mockdata = [
   {
@@ -43,10 +46,25 @@ const mockdata = [
 ];
 
 export function Header() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const authContext = useContext(AuthContext); // Get the context
-  const auth = authContext?.auth; // Access auth if it exists, otherwise null
+  const authContext = useContext(AuthContext);
+  const auth = authContext?.auth;
+  const setAuth = authContext?.setAuth;
+  const router = useRouter(); // Initialized router
+
+  const handleExit = async () => {
+    try {
+      await api.get("/auth/logout");
+      if (setAuth) {
+        setAuth({ fio: null, email: null, role: null });
+      }
+      router.push("/"); // Navigate after logout
+    } catch (error) {
+      console.error("Failed to log out", error);
+    }
+  };
 
   const links = mockdata.map((item) => (
     <Link href={item.href} key={item.title} passHref>
@@ -77,14 +95,22 @@ export function Header() {
             <Link href="/auction" className={classes.link} passHref>
               Продажа
             </Link>
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+            <HoverCard
+              width={600}
+              position="bottom"
+              radius="md"
+              shadow="md"
+              withinPortal
+            >
               <HoverCard.Target>
                 <a className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       О нас
                     </Box>
-                    <IconChevronDown style={{ width: rem(16), height: rem(16) }} />
+                    <IconChevronDown
+                      style={{ width: rem(16), height: rem(16) }}
+                    />
                   </Center>
                 </a>
               </HoverCard.Target>
@@ -106,7 +132,11 @@ export function Header() {
           <Group visibleFrom="sm">
             <Tooltip label="Избранное" withArrow>
               <ActionIcon variant="transparent" aria-label="Избранное">
-                <IconHeart style={{ width: "70%", height: "70%" }} stroke={1.5} color={"gray"} />
+                <IconHeart
+                  style={{ width: "70%", height: "70%" }}
+                  stroke={1.5}
+                  color={"gray"}
+                />
               </ActionIcon>
             </Tooltip>
             <Link href="/add-object" className={classes.link} passHref>
@@ -118,12 +148,26 @@ export function Header() {
                 Добавить объект
               </Button>
             </Link>
-            {auth ? (
-              <Link href="/profile" passHref>
-                <Button variant="light" color="#6600FF" leftSection={<IconUserCircle size={20} />}>
-                  Профиль
+            {auth?.email ? (
+              <Group>
+                <Link href="/profile" passHref>
+                  <Button
+                    variant="light"
+                    color="#6600FF"
+                    leftSection={<IconUserCircle size={20} />}
+                  >
+                    Профиль
+                  </Button>
+                </Link>
+                <Button
+                  variant="light"
+                  color="#6600FF"
+                  onClick={handleExit}
+                  leftSection={<IconLogout size={20} />}
+                >
+                  Выйти
                 </Button>
-              </Link>
+              </Group>
             ) : (
               <Link href="/authentication" passHref>
                 <Button variant="light" color="#6600FF">
@@ -133,7 +177,11 @@ export function Header() {
             )}
           </Group>
 
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="sm"
+          />
         </Group>
       </header>
 
@@ -156,7 +204,10 @@ export function Header() {
               <Box component="span" mr={5}>
                 О нас
               </Box>
-              <IconChevronDown style={{ width: rem(16), height: rem(16) }} color={"#6600FF"} />
+              <IconChevronDown
+                style={{ width: rem(16), height: rem(16) }}
+                color={"#6600FF"}
+              />
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{links}</Collapse>
@@ -180,11 +231,25 @@ export function Header() {
               Добавить объект
             </Button>
             {auth ? (
-              <Link href="/profile" passHref>
-                <Button variant="light" color="#6600FF" leftSection={<IconUserCircle size={20} />}>
-                  Профиль
+              <Group>
+                <Link href="/profile" passHref>
+                  <Button
+                    variant="light"
+                    color="#6600FF"
+                    leftSection={<IconUserCircle size={20} />}
+                  >
+                    Профиль
+                  </Button>
+                </Link>
+                <Button
+                  variant="light"
+                  color="#6600FF"
+                  onClick={handleExit}
+                  leftSection={<IconLogout size={20} />}
+                >
+                  Выйти
                 </Button>
-              </Link>
+              </Group>
             ) : (
               <Link href="/authentication" passHref>
                 <Button variant="light" color="#6600FF">
