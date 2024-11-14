@@ -22,7 +22,10 @@ export default function AuthenticationForm(props: any) {
   const [type, toggle] = useToggle(["login", "register"]);
   const router = useRouter();
   const { linkType } = router.query;
-  const { auth, setAuth } = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  const auth = authContext?.auth;
+  const setAuth = authContext?.setAuth;
+
   const [isMounted, setIsMounted] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
@@ -74,23 +77,24 @@ export default function AuthenticationForm(props: any) {
                 email: form.values.email,
                 password: form.values.password,
               });
-
-              setAuth({
+              
+              
+              setAuth?setAuth({
                 role: response.data.role,
                 email: response.data.email,
                 fio: response.data.fio,
-              });
+              }): null;
             } else {
               const response = await api.post("/auth/registration", {
                 email: form.values.email,
                 fio: form.values.name,
                 password: form.values.password,
               });
-              setAuth({
+              setAuth?setAuth({
                 role: "Клиент",
                 email: form.values.email,
                 fio: form.values.name,
-              });
+              }): null;
             }
             console.log("BIG AUTH", auth);
             router.push("/auction");
